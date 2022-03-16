@@ -23,7 +23,8 @@ public final class Cart implements Serializable {
 
     public Cart(Map<String, Integer> products) {
         this.id = randomUUID();
-        this.products = products;
+        // products can be Immutable
+        this.products = new HashMap<>(products);
     }
 
     private void initCart() {
