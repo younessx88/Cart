@@ -25,8 +25,12 @@ public class CartService {
      */
     public boolean add(UUID cartId, String productCode, int quantity) {
         final Cart cart = cartStorage.loadCart(cartId);
+        Integer add = null;
+        if (quantity>0) {
+            add = cart.getProducts().merge(productCode, quantity, Integer::sum);
+        }
         cartStorage.saveCart(cart);
-        return false;
+        return add !=null;
     }
 
     /**
@@ -42,8 +46,17 @@ public class CartService {
      */
     public boolean set(UUID cartId, String productCode, int quantity) {
         final Cart cart = cartStorage.loadCart(cartId);
+        Integer set;
+        if (quantity > 0) {
+            set = cart.getProducts().put(productCode, quantity);
+            set = set == null ? -1 : set;
+        }else if (quantity == 0){
+            set = cart.getProducts().remove(productCode);
+        } else {
+            set = cart.getProducts().remove(productCode);
+        }
         cartStorage.saveCart(cart);
-        return false;
+        return set != null && set != quantity;
     }
 
     /**
