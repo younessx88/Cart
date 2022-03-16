@@ -33,9 +33,8 @@ public final class Cart implements Serializable {
         return products;
     }
 
-    public Map<String, Integer> setProducts(String productCode, int quantity) {
+    public void setProducts(String productCode, int quantity) {
         products.put(productCode, quantity);
-        return products;
     }
 
     @Override
