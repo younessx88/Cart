@@ -3,15 +3,17 @@ package com.nespresso.sofa.interview.cart.model;
 import static java.util.UUID.randomUUID;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public final class Cart implements Serializable {
 
     private final UUID id;
-
+    private Map<String,Integer> products;
     public Cart() {
-        this(randomUUID());
+        this.id=null;
+        this.products = new HashMap<>();
     }
 
     public Cart(UUID id) {
@@ -20,6 +22,7 @@ public final class Cart implements Serializable {
 
     public Cart(Map<String, Integer> products) {
         this.id = randomUUID();
+        this.products = products;
     }
 
     public UUID getId() {
@@ -27,7 +30,14 @@ public final class Cart implements Serializable {
     }
 
     public Map<String, Integer> getProducts() {
-        return null;
+        return products;
     }
 
+    @Override
+    public String toString() {
+        return "Cart {" +
+            "id: " + id +
+            ", products: " + products +
+            '}';
+    }
 }
