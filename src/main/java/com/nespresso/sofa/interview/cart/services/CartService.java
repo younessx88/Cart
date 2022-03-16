@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class CartService {
 
-    private final PromotionEngine promotionEngine;
-    private final CartStorage cartStorage;
-
     @Autowired
-    public CartService(PromotionEngine promotionEngine, CartStorage cartStorage) {
-        this.promotionEngine = promotionEngine;
-        this.cartStorage = cartStorage;
-    }
+    private PromotionEngine promotionEngine;
+    @Autowired
+    private CartStorage cartStorage;
+
 
     /**
      * Add a quantity of a product to the cart and store the cart
