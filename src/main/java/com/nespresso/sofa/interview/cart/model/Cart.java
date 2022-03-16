@@ -37,8 +37,12 @@ public final class Cart implements Serializable {
         products.put(productCode, quantity);
     }
 
+    public void setAllProducts(Map<String, Integer> products) {
+        this.products = products;
+    }
+
     @Override
     public String toString() {
-        return "Cart {id: " + this.id + ", products: "+products+"}";
+        return "Cart {id: " + this.id + ", products: " + products + "}";
     }
 }
