@@ -7,14 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class CartService {
 
-    private final PromotionEngine promotionEngine;
-    private final CartStorage cartStorage;
-
     @Autowired
-    public CartService(PromotionEngine promotionEngine, CartStorage cartStorage) {
-        this.promotionEngine = promotionEngine;
-        this.cartStorage = cartStorage;
-    }
+    private  PromotionEngine promotionEngine;
+    @Autowired
+    private  CartStorage cartStorage;
 
     /**
      * Add a quantity of a product to the cart and store the cart
@@ -27,10 +23,20 @@ public class CartService {
      *     Quantity must be added
      * @return True if card has been modified
      */
+
     public boolean add(UUID cartId, String productCode, int quantity) {
+        boolean result = false;
         final Cart cart = cartStorage.loadCart(cartId);
-        cartStorage.saveCart(cart);
-        return false;
+        if (productCode != null && quantity > 0) {
+            result = true;
+            if(cart.getProducts().containsKey(productCode)) {
+                cart.setProducts(productCode, cart.getProducts().get(productCode) + quantity);
+            } else {
+                cart.setProducts(productCode, quantity);
+            }
+            cartStorage.saveCart(cart);
+        }
+        return result;
     }
 
     /**
@@ -45,11 +51,21 @@ public class CartService {
      * @return True if card has been modified
      */
     public boolean set(UUID cartId, String productCode, int quantity) {
+        boolean result = true;
         final Cart cart = cartStorage.loadCart(cartId);
-        cartStorage.saveCart(cart);
-        return false;
+        if (quantity <= 0) {
+            cart.getProducts().remove(productCode);
+        } else if (productCode != null) {
+            if (cart.getProducts().containsKey(productCode) &&
+                cart.getProducts().get(productCode) == quantity) {
+                result = false;
+            } else {
+                cart.setProducts(productCode, quantity);
+            }
+            cartStorage.saveCart(cart);
+        }
+        return result;
     }
-
     /**
      * Return the card with the corresponding ID
      *
@@ -57,6 +73,7 @@ public class CartService {
      * @return
      */
     public Cart get(UUID cartId) {
+        System.out.println("CartService Get " + cartStorage.loadCart(cartId));
         return cartStorage.loadCart(cartId);
     }
 }
