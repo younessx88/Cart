@@ -25,7 +25,20 @@ public class CartService {
      */
     public boolean add(UUID cartId, String productCode, int quantity) {
         final Cart cart = cartStorage.loadCart(cartId);
-        cartStorage.saveCart(cart);
+
+        if (quantity > 0) {
+            if (cart.getProducts().containsKey(productCode)) {
+                int total = cart.getProducts().get(productCode) + quantity;
+                cart.getProducts().put(productCode, total);
+                cartStorage.saveCart(cart);
+                return true;
+            } else {
+                cart.getProducts().put(productCode, quantity);
+                cartStorage.saveCart(cart);
+                return true;
+            }
+        }
+
         return false;
     }
 
