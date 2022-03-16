@@ -69,5 +69,4 @@ public class CartService {
     public Cart get(UUID cartId) {
         return cartStorage.loadCart(cartId);
     }
-
 }
