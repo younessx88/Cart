@@ -1,5 +1,6 @@
 package com.nespresso.sofa.interview.cart.services;
 
+import java.util.Map;
 import java.util.UUID;
 
 import com.nespresso.sofa.interview.cart.model.Cart;
@@ -55,8 +56,21 @@ public class CartService {
      */
     public boolean set(UUID cartId, String productCode, int quantity) {
         final Cart cart = cartStorage.loadCart(cartId);
+        Map<String, Integer> products = cart.getProducts();
+
+        if (quantity <= 0) {
+            products.remove(productCode);
+            return true;
+        }
+
+        if (products.containsKey(productCode) && products.get(productCode) == quantity) {
+            return false;
+        }
+
+        cart.getProducts().put(productCode, quantity);
         cartStorage.saveCart(cart);
-        return false;
+
+        return true;
     }
 
     /**
