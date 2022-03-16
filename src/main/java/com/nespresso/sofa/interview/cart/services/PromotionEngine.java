@@ -23,16 +23,14 @@ public class PromotionEngine {
 
         if (products.containsKey(PRODUCT_WITH_PROMOTION)) {
             products.put(PROMOTION, 1);
-        } else if (products.containsKey(PROMOTION)) {
-            products.remove(PROMOTION);
-        }
+        } else products.remove(PROMOTION);
 
         if (nbOfProducts >= 10) {
             int quantity = nbOfProducts / 10;
             products.put(GIFT, quantity);
         }
 
-        if (nbOfProducts < 10 && products.containsKey(GIFT)) {
+        if (nbOfProducts < 10) {
             products.remove(GIFT);
         }
 
