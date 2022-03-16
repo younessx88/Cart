@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nespresso.sofa.interview.cart.model.Cart;
 
+
 public class CartService {
 
     @Autowired
-    private PromotionEngine promotionEngine;
+    private  PromotionEngine promotionEngine;
     @Autowired
-    private CartStorage cartStorage;
+    private  CartStorage cartStorage;
+
 
     /**
      * Add a quantity of a product to the cart and store the cart
