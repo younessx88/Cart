@@ -38,7 +38,7 @@ public final class Cart implements Serializable {
     }
 
     public String toString() {
-        return "Cart {id: " + this.getId() + ", products: {5555=10}}";
+        return "Cart {id: " + this.getId() + ", products: " + this.getProducts().toString() + "}";
     }
 
 
