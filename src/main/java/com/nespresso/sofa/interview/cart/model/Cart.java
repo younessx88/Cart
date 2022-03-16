@@ -16,7 +16,8 @@ public final class Cart implements Serializable {
     }
 
     public Cart(UUID id) {
-        this(new HashMap<>());
+        this.id=id;
+        this.products=new HashMap<>();
     }
 
     public Cart(Map<String, Integer> products) {
