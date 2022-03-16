@@ -37,6 +37,10 @@ public final class Cart implements Serializable {
         return this.products;
     }
 
+    public void setProducts(Map<String, Integer> products) {
+        this.products = products;
+    }
+
     public String toString() {
         return "Cart {id: " + this.getId() + ", products: " + this.getProducts().toString() + "}";
     }
