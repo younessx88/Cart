@@ -9,6 +9,23 @@ import com.nespresso.sofa.interview.cart.model.Cart;
 public class PromotionEngine {
 
     public Cart apply(Cart cart) {
+        if (!cart.getProducts().isEmpty()) {
+            int quantity = 0;
+            for (String key : cart.getProducts().keySet()) {
+                quantity += cart.getProducts().get(key);
+            }
+            if (quantity >= 10) {
+                int quantityResult = quantity / 10;
+                cart.getProducts().put("7000", quantityResult);
+            } else {
+                cart.getProducts().remove("7000");
+            }
+            if (cart.getProducts().containsKey("1000")) {
+                cart.getProducts().put("9000", 1);
+            } else if (cart.getProducts().containsKey("9000")) {
+                cart.getProducts().remove("9000");
+            }
+        }
         return cart;
     }
 }
