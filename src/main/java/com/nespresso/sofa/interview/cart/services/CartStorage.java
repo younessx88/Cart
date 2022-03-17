@@ -11,7 +11,11 @@ public class CartStorage {
     private Map<UUID, Cart> carts = new Hashtable<>();
 
     public Cart loadCart(UUID cartId) {
-        return carts.getOrDefault(cartId, new Cart(cartId));
+        if (carts.containsKey(cartId)) {
+            return carts.get(cartId);
+        }
+        carts.put(cartId, new Cart(cartId));
+        return carts.get(cartId);
     }
 
     public Cart saveCart(Cart cart) {

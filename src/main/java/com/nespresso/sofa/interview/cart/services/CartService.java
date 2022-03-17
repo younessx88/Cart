@@ -24,11 +24,16 @@ public class CartService {
      * @return True if card has been modified
      */
     public boolean add(UUID cartId, String productCode, int quantity) {
-        final Cart cart = cartStorage.loadCart(cartId);
+        Cart cart = get(cartId);
         Integer add = null;
-        if (quantity>0) {
+        if (quantity!=0) {
             add = cart.getProducts().merge(productCode, quantity, Integer::sum);
+            if (add <= 0){
+                cart.getProducts().remove(productCode);
+                add = null;
+            }
         }
+        cart = this.promotionEngine.apply(cart);
         cartStorage.saveCart(cart);
         return add !=null;
     }
@@ -45,7 +50,7 @@ public class CartService {
      * @return True if card has been modified
      */
     public boolean set(UUID cartId, String productCode, int quantity) {
-        final Cart cart = cartStorage.loadCart(cartId);
+        Cart cart = get(cartId);
         Integer set;
         if (quantity > 0) {
             set = cart.getProducts().put(productCode, quantity);
@@ -55,6 +60,7 @@ public class CartService {
         } else {
             set = cart.getProducts().remove(productCode);
         }
+        cart = this.promotionEngine.apply(cart);
         cartStorage.saveCart(cart);
         return set != null && set != quantity;
     }
