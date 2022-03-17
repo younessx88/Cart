@@ -13,7 +13,6 @@ public class CartService {
     @Autowired
     private CartStorage cartStorage;
 
-
     /**
      * Add a quantity of a product to the cart and store the cart
      *
