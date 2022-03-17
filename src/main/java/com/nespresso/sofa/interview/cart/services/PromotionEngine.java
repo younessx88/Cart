@@ -44,10 +44,14 @@ public class PromotionEngine {
     private void applyGifts(Map<String, Integer> products){
         int quantityOfGifts = 0;
 
-        for(Integer productQuantity : products.values()){
-            int quotient = productQuantity / QUANTITY_PRODUCT_ELIGIBLE;
-            if(quotient > 0){
-                quantityOfGifts += quotient;
+        for(Map.Entry<String,Integer> product: products.entrySet()){
+            String productCode = product.getKey();
+            Integer productQuantity = product.getValue();
+            if(!productCode.equals(GIFT)){
+                int quotient = productQuantity / QUANTITY_PRODUCT_ELIGIBLE;
+                if(quotient > 0){
+                    quantityOfGifts += quotient;
+                }
             }
         }
 
