@@ -10,7 +10,7 @@ import java.util.UUID;
 public final class Cart implements Serializable {
 
     private final UUID id;
-    private  final Map<String, Integer> products;
+    private   Map<String, Integer> products;
     public Cart() {
         this(randomUUID());
     }
