@@ -1,5 +1,6 @@
 package com.nespresso.sofa.interview.cart.services;
 
+import java.util.Map;
 import java.util.UUID;
 
 import com.nespresso.sofa.interview.cart.model.Cart;
@@ -24,9 +25,23 @@ public class CartService {
      * @return True if card has been modified
      */
     public boolean add(UUID cartId, String productCode, int quantity) {
-        final Cart cart = cartStorage.loadCart(cartId);
-        cartStorage.saveCart(cart);
-        return false;
+        if(quantity<=0) return false;
+        else {
+            final Cart cart = cartStorage.loadCart(cartId);
+            Map<String,Integer> products=cart.getProducts();
+            if(products.containsKey(productCode)){
+                int oldQuantity= cart.getProducts().get(productCode);
+                cart.getProducts().put(productCode,oldQuantity+quantity);
+                return cartStorage.saveCart(cart)!=null;
+
+            }
+           else {
+                cart.getProducts().put(productCode,quantity);
+                return cartStorage.saveCart(cart)!=null;
+            }
+        }
+
+        //return cart!=null;
     }
 
     /**
@@ -42,9 +57,27 @@ public class CartService {
      */
     public boolean set(UUID cartId, String productCode, int quantity) {
         final Cart cart = cartStorage.loadCart(cartId);
-        cartStorage.saveCart(cart);
-        return false;
-    }
+        if(quantity==0){
+            cart.getProducts().remove(productCode);
+            return true;
+        }
+        else if(cart.getProducts().containsKey(productCode)) {
+            if(cart.getProducts().get(productCode)==quantity) return false;
+            else {
+                int newQuantity=cart.getProducts().get(productCode)+quantity;
+                if(quantity<=0){
+                    cart.getProducts().remove(productCode);
+                    return true;
+                }
+            }
+
+
+        }
+
+        cart.getProducts().put(productCode,quantity);
+        return cartStorage.saveCart(cart)!=null;
+
+   }
 
     /**
      * Return the card with the corresponding ID
@@ -54,5 +87,15 @@ public class CartService {
      */
     public Cart get(UUID cartId) {
         return cartStorage.loadCart(cartId);
+    }
+
+    /**
+     * Return the card with the corresponding ID
+     *
+     * @param cartId
+     * @return
+     */
+    public String toString(UUID cartId) {
+        return cartStorage.loadCart(cartId).toString();
     }
 }
